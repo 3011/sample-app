@@ -16,6 +16,12 @@ spec:
     env:
     - name: DOCKER_HOST
       value: tcp://dind-test.dev.svc.cluster.local:2375
+    - name: HTTP_PROXY
+      value: http://10.10.0.1:30800
+    - name: HTTPS_PROXY
+      value: http://10.10.0.1:30800
+    - name: NO_PROXY
+      value: localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local
   - name: git
     image: bitnami/git:latest
     command: ['cat']
