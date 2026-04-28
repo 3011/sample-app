@@ -3,8 +3,8 @@
 
 FROM nginx:alpine
 
-# 复制应用文件（如果有）
-# COPY ./dist /usr/share/nginx/html/
+# 复制应用文件
+COPY ./index.html /usr/share/nginx/html/index.html
 
 # 健康检查
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
