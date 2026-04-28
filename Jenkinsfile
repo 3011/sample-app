@@ -45,6 +45,11 @@ spec:
         }
     }
 
+    // 每5分钟检查 SCM 是否有变更（适合 webhook 不稳定的情况）
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+
     environment {
         // 内部 Registry 地址
         REGISTRY = '10.10.0.1:30500'
