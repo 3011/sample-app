@@ -23,9 +23,16 @@ spec:
     - name: NO_PROXY
       value: localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local
   - name: git
-    image: bitnami/git:latest
+    image: alpine/git:latest
     command: ['cat']
     tty: true
+    env:
+    - name: HTTP_PROXY
+      value: http://10.10.0.1:30800
+    - name: HTTPS_PROXY
+      value: http://10.10.0.1:30800
+    - name: NO_PROXY
+      value: localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local
 '''
         }
     }
@@ -77,8 +84,21 @@ spec:
                                                        keyFileVariable: 'SSH_KEY',
                                                        usernameVariable: 'GIT_USER')]) {
                         sh '''
-                            # 配置 SSH
-                            export GIT_SSH_COMMAND="ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no"
+                            # 配置 SSH 通过 HTTP 代理连接 GitHub
+                            mkdir -p ~/.ssh
+                            cat > ~/.ssh/config << EOF
+Host github.com
+    Hostname ssh.github.com
+    Port 443
+    User git
+    IdentityFile ${SSH_KEY}
+    StrictHostKeyChecking no
+    ProxyCommand nc -X connect -x 10.10.0.1:30800 %h %p
+EOF
+                            chmod 600 ~/.ssh/config
+
+                            # 验证 SSH 连通性
+                            ssh -T git@github.com 2>&1 || true
 
                             # 克隆 config 仓库
                             git clone ${CONFIG_REPO} /tmp/config-repo
