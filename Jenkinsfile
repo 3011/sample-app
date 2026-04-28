@@ -34,6 +34,12 @@ spec:
     - name: NO_PROXY
       value: localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local
 '''
+            # 为所有容器（包括 jnlp）设置环境变量
+            envVars = [
+                envVar(key: 'HTTP_PROXY', value: 'http://10.10.0.1:30800'),
+                envVar(key: 'HTTPS_PROXY', value: 'http://10.10.0.1:30800'),
+                envVar(key: 'NO_PROXY', value: 'localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local')
+            ]
         }
     }
 
