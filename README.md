@@ -104,4 +104,4 @@ environment {
     CONFIG_REPO = 'git@github.com:xxx/config.git'  // 你的 config 仓库
     MANIFEST_PATH = 'home-k3s/apps/your-app/deployment.yaml'
 }
-```
+```# test update
