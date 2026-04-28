@@ -9,6 +9,14 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
+  - name: jnlp
+    env:
+    - name: HTTP_PROXY
+      value: http://10.10.0.1:30800
+    - name: HTTPS_PROXY
+      value: http://10.10.0.1:30800
+    - name: NO_PROXY
+      value: localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local
   - name: docker
     image: docker:24-cli
     command: ['cat']
@@ -34,11 +42,6 @@ spec:
     - name: NO_PROXY
       value: localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local
 '''
-            envVars {
-                envVar(key: 'HTTP_PROXY', value: 'http://10.10.0.1:30800')
-                envVar(key: 'HTTPS_PROXY', value: 'http://10.10.0.1:30800')
-                envVar(key: 'NO_PROXY', value: 'localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc.cluster.local')
-            }
         }
     }
 
