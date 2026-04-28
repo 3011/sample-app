@@ -92,6 +92,9 @@ spec:
                                                        keyFileVariable: 'SSH_KEY',
                                                        usernameVariable: 'GIT_USER')]) {
                         sh '''
+                            # 安装 netcat-openbsd（支持 HTTP CONNECT 代理）
+                            apk add --no-cache netcat-openbsd 2>/dev/null || true
+
                             # 配置 SSH 通过 HTTP 代理连接 GitHub
                             mkdir -p ~/.ssh
                             cat > ~/.ssh/config << EOF
